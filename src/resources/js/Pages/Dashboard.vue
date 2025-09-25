@@ -23,6 +23,9 @@ import { Head } from '@inertiajs/vue3';
                     <div class="p-6 text-gray-900">
                         You're logged in!
                     </div>
+                     <div class="text-sm font-medium text-gray-500">
+                                {{ $page.props }}
+                            </div>
                 </div>
             </div>
         </div>

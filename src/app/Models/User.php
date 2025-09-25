@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'is_approved'
     ];
 
     /**
@@ -60,5 +61,23 @@ class User extends Authenticatable
       public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+    public static function visibleUsers($currentUser)
+    {
+         if ($currentUser->role->name === 'admin') {
+            $users = User::with('role')->get();
+        } else {
+         
+            $users = User::with('role')->whereHas('role', function ($query) use ($currentUser) {
+                if ($currentUser->role->name === 'software_manager') {
+                    $query->where('name', 'developer');
+                } elseif ($currentUser->role->name === 'designer_manager') {
+                    $query->where('name', 'designer');
+                } elseif ($currentUser->role->name === 'product_manager') {
+                    $query->where('name', 'analyst');
+                }
+            })->get();
+        }
+        return $users;
     }
 }

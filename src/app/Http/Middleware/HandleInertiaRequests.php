@@ -14,7 +14,7 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
-    /**
+    /**r
      * Determine the current asset version.
      */
     public function version(Request $request): ?string
@@ -29,10 +29,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
+         $user = null;
+        
+        if ($request->user()) {
+            $user = $request->user()->toArray();
+            $user['role_name'] = $request->user()->role->name;
+        }
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
             ],
         ];
     }

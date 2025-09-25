@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -21,11 +20,11 @@ class RolesTableSeeder extends Seeder
         ];
 
         foreach ($roles as $role) {
-            DB::table('roles')->insert([
-                'name' => $role,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            // Insert only if it does not exist
+            DB::table('roles')->updateOrInsert(
+                ['name' => $role], // condition to check existing
+                ['created_at' => now(), 'updated_at' => now()]
+            );
         }
     }
 }

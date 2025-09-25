@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('requires_design')->default(false);
             $table->enum('current_stage', ['product','design','development','completed'])->default('product');

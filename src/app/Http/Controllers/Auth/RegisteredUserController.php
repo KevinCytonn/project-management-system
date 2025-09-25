@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -19,8 +20,11 @@ class RegisteredUserController extends Controller
      * Display the registration view.
      */
     public function create(): Response
-    {
-        return Inertia::render('Auth/Register');
+
+    {  $roles = Role::where('name', '!=', 'admin')->get(['id', 'name']);
+        return Inertia::render('Auth/Register', [
+            'roles' => $roles,
+        ]);
     }
 
     /**
@@ -34,12 +38,15 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+             'role_id' => 'required|exists:roles,id',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+             'role_id' => $request->role_id,
+            
         ]);
 
         event(new Registered($user));
