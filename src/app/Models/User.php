@@ -69,7 +69,7 @@ class User extends Authenticatable
         } else {
          
             $users = User::with('role')->whereHas('role', function ($query) use ($currentUser) {
-                if ($currentUser->role->name === 'software_manager') {
+                if ($currentUser->role->name === 'development_manager') {
                     $query->where('name', 'developer');
                 } elseif ($currentUser->role->name === 'designer_manager') {
                     $query->where('name', 'designer');

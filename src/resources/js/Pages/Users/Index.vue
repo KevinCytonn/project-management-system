@@ -2,6 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
+
 const props = defineProps({
   users: Array,
 });

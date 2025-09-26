@@ -1,49 +1,72 @@
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import ProjectCard from './ProjectCard.vue';
 import ManagerLayout from '@/Layouts/ManagerLayout.vue';
 
 const props = defineProps({
   projects: Object
 });
-const page = usePage();
 </script>
 
 <template>
-    <ManagerLayout>
-  <div class="space-y-6">
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Projects</h1>
-      <Link
-        :href="route('projects.create')"
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+  <ManagerLayout>
+    <div class="space-y-8">
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 class="text-3xl font-semibold">Projects</h1>
+
+        <Link
+          :href="route('projects.create')"
+          class="inline-flex items-center px-4 py-2 rounded-lg shadow-sm transition"
+        >
+          + New Project
+        </Link>
+      </div>
+
+      <!-- Projects grid -->
+      <div v-if="projects.data.length" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ProjectCard
+          v-for="project in projects.data"
+          :key="project.id"
+          :project="project"
+        />
+      </div>
+
+      <div v-else class="text-center py-12 text-gray-500">
+        No projects found.
+      </div>
+
+      <!-- Pagination -->
+      <div
+        v-if="projects.last_page > 1"
+        class="mt-6 flex justify-center gap-2 flex-wrap"
       >
-        + New Project
-      </Link>
-    </div>
+        <Link
+          v-if="projects.current_page > 1"
+          :href="route('projects.index', { page: projects.current_page - 1 })"
+          class="px-3 py-1 rounded border"
+        >
+          Prev
+        </Link>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <ProjectCard
-        v-for="project in projects?.data"
-        :key="project.id"
-        :project="project"
-      />
-    </div>
+        <Link
+          v-for="p in projects.last_page"
+          :key="p"
+          :href="route('projects.index', { page: p })"
+          class="px-3 py-1 rounded border"
+          :class="{ 'bg-gray-900 text-white': p === projects.current_page }"
+        >
+          {{ p }}
+        </Link>
 
-    <!-- Pagination -->
-    <!-- <div class="mt-6 flex justify-center space-x-2">
-      <Link
-        v-for="link in projects.links"
-        :key="link.label"
-        :href="link.url"
-        v-html="link.label"
-        class="px-3 py-1 border rounded"
-        :class="{
-          'bg-blue-600 text-white': link.active,
-          'text-gray-500 cursor-not-allowed': !link.url
-        }"
-      />
-    </div> -->
-  </div>
+        <Link
+          v-if="projects.current_page < projects.last_page"
+          :href="route('projects.index', { page: projects.current_page + 1 })"
+          class="px-3 py-1 rounded border"
+        >
+          Next
+        </Link>
+      </div>
+    </div>
   </ManagerLayout>
 </template>

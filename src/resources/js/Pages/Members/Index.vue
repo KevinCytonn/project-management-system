@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import ManagerLayout from '@/Layouts/ManagerLayout.vue';
 
 const props = defineProps({
   teamMembers: Array,
@@ -10,7 +11,7 @@ const props = defineProps({
 <template>
   <Head title="My Team" />
 
-  <AuthenticatedLayout>
+  <ManagerLayout>
     <template #header>
       <h2 class="text-lg sm:text-xl font-semibold text-gray-800">My Team</h2>
     </template>
@@ -57,5 +58,5 @@ const props = defineProps({
         </table>
       </div>
     </div>
-  </AuthenticatedLayout>
+  </ManagerLayout>
 </template>

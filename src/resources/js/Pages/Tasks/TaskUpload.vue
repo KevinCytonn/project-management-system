@@ -23,7 +23,7 @@ function submit() {
 <template>
   <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
     <h1 class="text-lg font-bold mb-4">Create Task</h1>
-
+    {{ project }}
     <form @submit.prevent="submit" class="space-y-4">
       <div>
         <label class="block text-sm">Title</label>

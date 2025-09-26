@@ -1,9 +1,15 @@
 <script setup>
 const props = defineProps({
-  stage: String
+  project: Object
 });
 
-const stages = ['product', 'design', 'development', 'completed'];
+// Base stages
+let stages = ['product', 'design', 'development', 'completed'];
+
+// If design is NOT required, remove it
+if (!props.project.requires_design) {
+  stages = stages.filter(s => s !== 'design');
+}
 </script>
 
 <template>
@@ -11,14 +17,14 @@ const stages = ['product', 'design', 'development', 'completed'];
     <div
       v-for="s in stages"
       :key="s"
-      class="flex-1 text-center py-2 rounded"
+      class="flex-1 text-center py-2 rounded capitalize font-medium"
       :class="[
-        stage === s ? 'bg-blue-600 text-white' :
-        stages.indexOf(s) < stages.indexOf(stage) ? 'bg-green-500 text-white' :
+        project.current_stage === s ? 'bg-blue-600 text-white' :
+        stages.indexOf(s) < stages.indexOf(project.current_stage) ? 'bg-green-500 text-white' :
         'bg-gray-200 text-gray-600'
       ]"
     >
-      {{ s.toUpperCase() }}
+      {{ s }}
     </div>
   </div>
 </template>

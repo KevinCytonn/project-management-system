@@ -12,7 +12,7 @@ const userRole = computed(() => page.props.auth.user.role_name ?? '');
 </script>
 
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+  <div class="flex min-h-screen ">
     <aside class="hidden lg:flex lg:flex-col w-64 bg-white border-r border-gray-200">
       <div class="p-6 flex items-center">
         <Link :href="route('dashboard')">
@@ -26,7 +26,7 @@ const userRole = computed(() => page.props.auth.user.role_name ?? '');
         <NavLink :href="route('team')" :active="route().current('team')">Team Members</NavLink>
         <NavLink :href="route('files')" :active="route().current('files')">Files</NavLink>
          <NavLink :href="route('my.tasks')" :active="route().current('my.tasks')">My Tasks</NavLink>
-        <NavLink :href="route('users')" :active="route().current('users')">Manage Users</NavLink>
+        <NavLink :href="route('users')" :active="route().current('users')" v-show="userRole==='admin'">Manage Users</NavLink>
       </nav>
 
       <div class="p-4 border-t border-gray-200">

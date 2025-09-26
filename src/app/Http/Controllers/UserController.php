@@ -18,7 +18,7 @@ class UserController extends Controller
         } else {
             // Managers only see their team
             $users = User::with('role')->whereHas('role', function ($query) use ($currentUser) {
-                if ($currentUser->role->name === 'software_manager') {
+                if ($currentUser->role->name === 'development_manager') {
                     $query->where('name', 'developer');
                 } elseif ($currentUser->role->name === 'designer_manager') {
                     $query->where('name', 'designer');
