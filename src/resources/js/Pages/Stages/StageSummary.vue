@@ -14,7 +14,6 @@ const props = defineProps({
       </span>
     </p>
 
-    <!-- Only show design line if it's required -->
     <p
       v-if="project.requires_design"
       class="text-sm text-gray-600 mt-1"

@@ -1,6 +1,6 @@
 <script setup>
 import MyTaskCard  from '@/Components/MyTaskCard.vue'
-import MemberLayout from '@/Layouts/MemberLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
   tasks: Array,
@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <MemberLayout>
+  <AuthenticatedLayout>
   <div class="space-y-6">
     <!-- Header -->
     <div class="flex justify-between items-center">
@@ -36,5 +36,5 @@ const props = defineProps({
       />
     </div>
   </div>
-  </MemberLayout>
+  </AuthenticatedLayout>
 </template>

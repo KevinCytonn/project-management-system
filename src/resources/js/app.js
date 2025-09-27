@@ -5,8 +5,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from './Pages/Home.vue';
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 //  const routes = [

@@ -68,7 +68,7 @@ class TaskController extends Controller
 {
     $user = $request->user();
 
-    // Allow only managers to create tasks
+    
     if (!in_array($user->role->name, ['product_manager', 'development_manager', 'design_manager'])) {
         abort(403);
     }
@@ -134,7 +134,7 @@ class TaskController extends Controller
     {
         if ($task->project_id !== $project->id) abort(404);
 
-        // Assignee updating only status
+       
         if ($request->has('status') && $request->except('status') === []) {
             $validated = $request->validate([
                 'status' => ['required', Rule::in(Task::allowedStatusesForStage($task->stage))],
@@ -146,7 +146,7 @@ class TaskController extends Controller
             return back()->with('success', 'Task status updated.');
         }
 
-        // Full update by manager
+       
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',

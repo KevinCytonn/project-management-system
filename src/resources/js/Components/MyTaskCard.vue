@@ -24,7 +24,7 @@ function updateStatus(newStatus) {
     <!-- Title -->
     <h2 class="font-semibold text-lg text-gray-800">Title: {{ task.title }}</h2>
 
-   
+    <p>Due: {{ task.due_date }}</p>
     <p class="text-sm text-gray-600 mt-1 line-clamp-2">
       Description: {{ task.description || 'No description provided.' }}
     </p>

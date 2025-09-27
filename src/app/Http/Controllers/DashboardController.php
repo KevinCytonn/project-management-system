@@ -15,7 +15,7 @@ class DashboardController extends Controller
             'admin' => Inertia::render('Dashboards/AdminDashboard'),
             'product_manager' => Inertia::render('Dashboards/ProductManagerDashboard'),
             'development_manager' => Inertia::render('Dashboards/SoftwareManagerDashboard'),
-            'designer_manager' => Inertia::render('Dashboards/DesignerManagerDashboard'),
+            'design_manager' => Inertia::render('Dashboards/DesignerManagerDashboard'),
             'developer', 'designer', 'analyst', 'member' => Inertia::render('Dashboards/MemberDashboard'),
             default => Inertia::render('Dashboards/MemberDashboard'),
         };

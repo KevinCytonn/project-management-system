@@ -1,6 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 const props = defineProps({
   project: Object,
   members: Array
@@ -13,7 +13,7 @@ const form = useForm({
   stage: props.project.current_stage,
   status: 'not_started',
   due_date: ''
-});
+});//bg-blue-600
 
 function submit() {
   form.post(route('tasks.store', props.project.id));
@@ -21,9 +21,10 @@ function submit() {
 </script>
 
 <template>
+  <AuthenticatedLayout>
   <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
     <h1 class="text-lg font-bold mb-4">Create Task</h1>
-    {{ project }}
+  
     <form @submit.prevent="submit" class="space-y-4">
       <div>
         <label class="block text-sm">Title</label>
@@ -50,10 +51,11 @@ function submit() {
       </div>
 
       <div class="flex justify-end space-x-3">
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-green-700">
           Save Task
         </button>
       </div>
     </form>
   </div>
+  </AuthenticatedLayout>
 </template>

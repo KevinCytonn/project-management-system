@@ -12,7 +12,7 @@ class DeliverableController extends Controller
 {
     public function index(Request $request)
     {
-        // list deliverables (global) or you can scope to user
+       
         $files = Deliverable::with('task.project')->latest()->get();
 
         return Inertia::render('Files/Index', [

@@ -1,7 +1,8 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import TaskCard from './TaskCard.vue';
-
+import AuthenticatedLayout
+ from '@/Layouts/AuthenticatedLayout.vue';
 const props = defineProps({
   project: Object,
   tasks: Array
@@ -9,6 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
+  <AuthenticatedLayout>
   <div class="space-y-6">
     <!-- Header -->
     <div class="flex justify-between items-center">
@@ -17,21 +19,21 @@ const props = defineProps({
       </h1>
       <Link
         :href="route('tasks.create', project.id)"
-        class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
       >
-        + Add Task
+        + Add Task 
       </Link>
     </div>
 
-    <!-- Empty state -->
+   
     <div
       v-if="tasks.length === 0"
       class="p-6 border rounded-lg bg-gray-50 text-center text-gray-500"
     >
-      No tasks yet. Click <span class="font-semibold">+ Add Task</span> to create one.
+      No tasks yet for this project
     </div>
 
-    <!-- Task list -->
+    
     <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <TaskCard
         v-for="task in tasks"
@@ -41,4 +43,5 @@ const props = defineProps({
       />
     </div>
   </div>
+  </AuthenticatedLayout>
 </template>

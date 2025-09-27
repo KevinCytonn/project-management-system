@@ -1,1 +1,0 @@
-import{_ as t}from"./AdminLayout-B0pG9fGE.js";import{c as a,o,w as r,p as s}from"./app-C6lQK9rI.js";const m={__name:"MemberLayout",setup(_){return(e,c)=>(o(),a(t,null,{default:r(()=>[s(e.$slots,"default")]),_:3}))}};export{m as _};

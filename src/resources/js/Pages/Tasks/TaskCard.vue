@@ -80,7 +80,7 @@ const showModal = ref(false);
           @click="showModal = false"
           class="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
         >
-          ✕
+          x
         </button>
 
         <h3 class="text-lg font-semibold text-gray-800 mb-4">
