@@ -1,0 +1,1 @@
+import{_ as t}from"./AdminLayout-B0pG9fGE.js";import{c as e,o,w as r,p as s}from"./app-C6lQK9rI.js";const p={__name:"ManagerLayout",setup(_){return(a,n)=>(o(),e(t,null,{default:r(()=>[s(a.$slots,"default")]),_:3}))}};export{p as _};

@@ -9,16 +9,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from './Pages/Home.vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
- const routes = [
-    {path:'/',
-    component:Home
-}
- ]
+//  const routes = [
+//     {path:'/',
+//     component:Home
+// }
+//  ]
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes,
+// })
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -31,7 +31,6 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
-            .use(router)
             .mount(el);
     },
     progress: {
