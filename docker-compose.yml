@@ -29,7 +29,7 @@ services:
     environment:
       MYSQL_DATABASE: task_workflow
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: laravel
+      MYSQL_USER: kevin
       MYSQL_PASSWORD: 1234
     ports:
       - "3307:3306"

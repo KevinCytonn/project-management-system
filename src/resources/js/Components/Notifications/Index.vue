@@ -20,14 +20,14 @@ defineProps({
           {{ n.message }}
         </span>
         <div>
-          <Link
+          <!-- <Link
             :href="route('notifications.read', n.id)"
             method="patch"
             as="button"
             class="text-sm text-blue-600 hover:underline"
           >
             Mark as read
-          </Link>
+          </Link> -->
         </div>
       </li>
     </ul>

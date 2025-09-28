@@ -9,26 +9,43 @@ use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
-    public function index(Request $request)
-    {
-        $projects = Project::with('creator')
-            ->latest()
-            ->paginate(10)
-            ->through(fn($project) => [
-                'id' => $project->id,
-                'name' => $project->name,
-                'description' => $project->description,
-                'requires_design' => (bool) $project->requires_design,
-                'current_stage' => $project->current_stage,
-                'creator' => [
-                    'id' => $project->creator->id ?? null,
-                    'name' => $project->creator->name ?? '—',
-                ],
-                'created_at' => $project->created_at->diffForHumans(),
-            ]);
+   public function index(Request $request)
+{
+    $query = Project::with('creator')->latest();
 
-        return Inertia::render('Projects/ProjectList', ['projects' => $projects]);
+    // Apply search filter if provided
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
     }
+
+    // Apply status filter if provided
+    if ($request->filled('status')) {
+        $query->where('current_stage', $request->status);
+    }
+
+    $projects = $query->paginate(10)
+        ->through(fn($project) => [
+            'id' => $project->id,
+            'name' => $project->name,
+            'description' => $project->description,
+            'requires_design' => (bool) $project->requires_design,
+            'current_stage' => $project->current_stage,
+            'creator' => [
+                'id' => $project->creator->id ?? null,
+                'name' => $project->creator->name ?? '—',
+            ],
+            'created_at' => $project->created_at
+        ]);
+
+    return Inertia::render('Projects/ProjectList', [
+        'projects' => $projects,
+        'filters' => [
+            'search' => $request->query('search', ''),
+            'status' => $request->query('status', ''),
+        ],
+    ]);
+}
+
     public function show(Project $project)
 {
    

@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Notification;
 use Inertia\Inertia;
-use App\Models\Notification as AppNotification;
 
 class NotificationController extends Controller
 {
@@ -12,54 +11,39 @@ class NotificationController extends Controller
     {
         $user = $request->user();
 
-        $notifications = AppNotification::where('user_id', $user->id)
+        $notifications = Notification::where('user_id', $user->id)
             ->latest()
+            ->take(20)
             ->get();
 
-        return Inertia::render('Notifications/Index', [
-            'notifications' => $notifications
+        $unreadCount = Notification::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->count();
+
+       
+        if (! $request->wantsJson()) {
+            return Inertia::render('Notifications/Index', [
+                'notifications' => $notifications,
+                'unreadCount' => $unreadCount,
+            ]);
+        }
+
+        
+        return response()->json([
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount,
         ]);
     }
 
-    public function markAsRead(AppNotification $notification)
+    public function markAllAsRead(Request $request)
     {
-        if ($notification->user_id !== auth()->id()) abort(403);
+        $user = $request->user();
 
-        $notification->update(['is_read' => true]);
+        Notification::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
 
-        return back()->with('success', 'Notification marked as read');
+        return back();
     }
 }
 
-// <?php
-
-// namespace App\Http\Controllers;
-
-// use App\Models\Notification;
-// use Illuminate\Http\Request;
-// use Inertia\Inertia;
-
-// class NotificationController extends Controller
-// {
-//     public function index(Request $request)
-//     {
-//         $notifications = Notification::where('user_id', $request->user()->id)
-//             ->latest()
-//             ->get();
-
-//         return Inertia::render('Notifications/Index', [
-//             'notifications' => $notifications,
-//         ]);
-//     }
-
-//     public function markAsRead(Notification $notification)
-//     {
-//         if ($notification->user_id !== auth()->id()) {
-//             abort(403);
-//         }
-
-//         $notification->update(['is_read' => true]);
-
-//         return back()->with('success', 'Notification marked as read.');
-//     }
-// }

@@ -44,19 +44,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('tasks', TaskController::class);
     });
 
-    // Global "my tasks" (sidebar link)
+   
     Route::get('/my-tasks', [TaskController::class, 'myTasks'])->name('my.tasks');
 
-    // Deliverables
+  
     Route::post('/tasks/{task}/deliverables', [DeliverableController::class,'store'])->name('deliverables.store');
-    Route::get('/deliverables/{deliverable}/download', [DeliverableController::class,'download'])->name('deliverables.download');
+    Route::get('/deliverables/{deliverable}/view', [DeliverableController::class, 'view'])->name('deliverables.view');
+    Route::get('/deliverables/{deliverable}/download', [DeliverableController::class, 'download'])->name('deliverables.download');
+   
     Route::get('/files', [DeliverableController::class,'index'])->name('files');
 
-    // Notifications
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+   
+     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
 
-    // Team/users/profile
+  
     Route::get('/team', [TeamController::class, 'index'])->name('team');
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::post('/users/{user}/verify', [UserController::class, 'verify'])->name('users.verify');

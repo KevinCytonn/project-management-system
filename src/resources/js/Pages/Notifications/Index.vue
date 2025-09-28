@@ -21,14 +21,14 @@ defineProps({
          
         </span>
         <div>
-          <Link v-show="!n.is_read"
+          <!-- <Link v-show="!n.is_read"
             :href="route('notifications.read', n.id)"
             method="patch"
             as="button"
             class="text-sm text-blue-600 hover:underline"
           >
             Mark as read
-          </Link>
+          </Link> -->
         </div>
       </li>
     </ul>

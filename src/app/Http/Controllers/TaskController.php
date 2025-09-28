@@ -24,28 +24,63 @@ class TaskController extends Controller
         ]);
     }
 
-    public function myTasks(Request $request )
-    {
-        $user = $request->user();
+    public function myTasks(Request $request)
+{
+    $user = $request->user();
 
-         $tasks = Task::with(['project', 'deliverables'])
-    ->where('assigned_to', $user->id)
-    ->get();
+   
+    $query = Task::with(['project', 'deliverables'])
+        ->where('assigned_to', $user->id)
+        ->latest();
 
-        $summary = [
-            'total' => $tasks->count(),
-            'not_started' => $tasks->where('status', 'not_started')->count(),
-            'in_progress' => $tasks->where('status', 'in_progress')->count(),
-            'testing' => $tasks->where('status', 'testing')->count(),
-            'complete' => $tasks->where('status', 'complete')->count(),
-            'overdue' => $tasks->filter(fn($t) => $t->due_date && $t->due_date->isPast() && $t->status !== 'complete')->count(),
-        ];
-
-        return Inertia::render('Tasks/MyTasks', [
-            'tasks' => $tasks,
-            'summary' => $summary,
-        ]);
+    
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhereHas('project', fn($p) => $p->where('name', 'like', "%{$search}%"));
+        });
     }
+
+   
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+   
+    $tasks = $query->paginate(10)
+        ->through(fn($task) => [
+            'id' => $task->id,
+            'name' => $task->name,
+            'status' => $task->status,
+            'due_date' => $task->due_date?->format('Y-m-d'),
+            'project' => [
+                'id' => $task->project->id ?? null,
+                'name' => $task->project->name ?? '—',
+            ],
+            'deliverables_count' => $task->deliverables->count(),
+        ]);
+
+    
+    $summary = [
+        'total' => $tasks->total(),
+        'not_started' => $tasks->filter(fn($t) => $t['status'] === 'not_started')->count(),
+        'in_progress' => $tasks->filter(fn($t) => $t['status'] === 'in_progress')->count(),
+        'testing' => $tasks->filter(fn($t) => $t['status'] === 'testing')->count(),
+        'complete' => $tasks->filter(fn($t) => $t['status'] === 'complete')->count(),
+        'overdue' => $tasks->filter(fn($t) => $t['due_date'] && \Carbon\Carbon::parse($t['due_date'])->isPast() && $t['status'] !== 'complete')->count(),
+    ];
+
+    
+    return Inertia::render('Tasks/MyTasks', [
+        'tasks' => $tasks,
+        'summary' => $summary,
+        'filters' => [
+            'search' => $request->query('search', ''),
+            'status' => $request->query('status', ''),
+        ],
+    ]);
+}
 
     public function create(Project $project, Request $request)
     {
@@ -82,7 +117,6 @@ class TaskController extends Controller
         'due_date' => 'nullable|date',
     ]);
 
-    // Stage-locking rules
     if ($validated['stage'] === 'design' && !in_array($project->current_stage, ['design','development','completed'])) {
         return back()->withErrors(['stage' => 'Design tasks are locked until the product stage completes.']);
     }
@@ -118,17 +152,35 @@ class TaskController extends Controller
 }
 
     public function edit(Project $project, Task $task)
-    {
-        if ($task->project_id !== $project->id) abort(404);
+{
+    if ($task->project_id !== $project->id) abort(404);
 
+    $user = request()->user();
+    
+   
+    if ($task->assigned_to === $user->id) {
+        $deliverables = $task->deliverables()->with('uploader')->get();
+        
+        return Inertia::render('Tasks/TaskUpdate', [
+            'project' => $project,
+            'task' => $task,
+            'deliverables' => $deliverables,
+        ]);
+    }
+    
+  
+    if (in_array($user->role->name, ['product_manager', 'design_manager', 'development_manager'])) {
         $members = User::all();
-
-        return Inertia::render('Tasks/EditTask', [
+        
+        return Inertia::render('Tasks/TaskEdit', [
             'project' => $project,
             'task' => $task,
             'members' => $members,
         ]);
     }
+    
+    abort(403);
+}
 
     public function update(Request $request, Project $project, Task $task)
     {

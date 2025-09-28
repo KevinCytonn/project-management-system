@@ -12,8 +12,7 @@ class DeliverableController extends Controller
 {
     public function index(Request $request)
     {
-       
-        $files = Deliverable::with('task.project')->latest()->get();
+        $files = Deliverable::with('task.project', 'uploader')->latest()->get();
 
         return Inertia::render('Files/Index', [
             'files' => $files,
@@ -35,8 +34,35 @@ class DeliverableController extends Controller
         return back()->with('success', 'File uploaded successfully.');
     }
 
+    public function view(Deliverable $deliverable)
+    {
+        // Check if file exists
+        if (!Storage::exists($deliverable->file_path)) {
+            abort(404, 'File not found');
+        }
+
+        // Get file details
+        $filePath = Storage::path($deliverable->file_path);
+        $mimeType = Storage::mimeType($deliverable->file_path);
+        $fileName = basename($deliverable->file_path);
+
+        
+        return response()->file($filePath, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . $fileName . '"'
+        ]);
+    }
+
     public function download(Deliverable $deliverable)
     {
-        return Storage::download($deliverable->file_path);
+        // Check if file exists
+        if (!Storage::exists($deliverable->file_path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download(
+            $deliverable->file_path, 
+            basename($deliverable->file_path)
+        );
     }
 }

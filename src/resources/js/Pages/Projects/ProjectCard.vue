@@ -2,55 +2,65 @@
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
-  project: Object
+    project: Object
 });
+
+const stageColors = {
+    product: 'bg-yellow-100 text-yellow-800',
+    design: 'bg-purple-100 text-purple-800',
+    development: 'bg-green-100 text-green-800',
+    completed: 'bg-gray-100 text-gray-800'
+};
 </script>
 
 <template>
-  <div
-    class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 flex flex-col justify-between"
-  >
-    <!-- Header -->
-    <div>
-      <h2 class="text-xl font-semibold text-gray-800 mb-1 truncate">
-        {{ project.name }}
-      </h2>
-      <p class="text-gray-600 text-sm line-clamp-2">
-        {{ project.description || 'No description provided.' }}
-      </p>
-    </div>
+    <div class="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+        <div class="p-6">
+            <div class="flex justify-between items-start mb-3">
+                <h3 class="text-lg font-semibold text-gray-900 truncate">{{ project.name }}</h3>
+                <span 
+                    class="px-2 py-1 rounded-full text-xs font-medium capitalize shrink-0"
+                    :class="stageColors[project.current_stage] || 'bg-gray-100 text-gray-800'"
+                >
+                    {{ project.current_stage }}
+                </span>
+            </div>
 
-    <!-- Meta Info -->
-    <div class="mt-4 space-y-1 text-sm">
-      <p>
-        <span class="text-gray-500">Stage:</span>
-        <span
-          class="ml-1 px-2 py-0.5 rounded-full text-xs font-medium"
-          :class="{
-            'bg-yellow-100 text-yellow-800': project.current_stage === 'product',
-            'bg-blue-100 text-blue-800': project.current_stage === 'design',
-            'bg-green-100 text-green-800': project.current_stage === 'development',
-            'bg-gray-100 text-gray-600': !project.current_stage
-          }"
-        >
-          {{ project.current_stage || 'N/A' }}
-        </span>
-      </p>
-      <p>
-        <span class="text-gray-500">Created by:</span>
-        <span class="ml-1 font-medium">{{ project.creator.name }}</span>
-      </p>
-      <p class="text-gray-400">Created {{ project.created_at }}</p>
-    </div>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                {{ project.description || 'No description provided' }}
+            </p>
 
-    <!-- Actions -->
-    <div class="mt-5 flex justify-end">
-      <Link
-        :href="route('projects.show', project.id)"
-        class="px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
-      >
-        View
-      </Link>
+            <div class="space-y-2 text-sm text-gray-600">
+                <div class="flex justify-between">
+                    <span>Created by:</span>
+                    <span class="font-medium">{{ project.creator.name }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Design Required:</span>
+                    <span class="font-medium">{{ project.requires_design ? 'Yes' : 'No' }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Created:</span>
+                    <span>{{ new Date(project.created_at).toLocaleDateString() }}</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-4 pt-4 border-t">
+                <Link
+                    :href="route('projects.show', project.id)"
+                    class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                >
+                    View Project →
+                </Link>
+                
+                <Link
+                    v-if="project.current_stage !== 'completed'"
+                    :href="route('tasks.index', { project: project.id })"
+                    class="text-gray-600 hover:text-gray-800 text-sm"
+                >
+                    View Tasks
+                </Link>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
