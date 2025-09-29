@@ -264,7 +264,7 @@ const formatStatus = (status) => {
   overflow: hidden;
 }
 
-/* Responsive breakpoints */
+
 @media (max-width: 480px) {
   .xs\:inline {
     display: inline;

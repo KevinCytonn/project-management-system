@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <!-- Recent Projects & Tasks -->
+      
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Projects -->
         <div class="bg-white rounded-lg shadow-sm border">
@@ -99,7 +99,7 @@
           </div>
         </div>
 
-        <!-- Recent Tasks -->
+      
         <div class="bg-white rounded-lg shadow-sm border">
           <div class="p-6 border-b">
             <h2 class="text-lg font-semibold text-gray-900">Recent Tasks</h2>

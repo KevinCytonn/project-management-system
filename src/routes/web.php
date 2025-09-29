@@ -36,10 +36,10 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Projects resource (project-level routes)
+
     Route::resource('projects', ProjectController::class);
 
-    // Nested tasks under project (keeps existing nesting)
+    
     Route::prefix('projects/{project}')->group(function () {
         Route::resource('tasks', TaskController::class);
     });

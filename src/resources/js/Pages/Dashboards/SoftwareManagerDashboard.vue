@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <!-- Development Projects and Tasks -->
+     
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Development Projects -->
         <div class="bg-white rounded-lg shadow-sm border">

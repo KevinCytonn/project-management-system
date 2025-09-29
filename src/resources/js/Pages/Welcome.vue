@@ -47,12 +47,12 @@ defineProps({
           <span class="text-blue-600 block sm:inline">Achieve More.</span>
         </h1>
         
-        <!-- Subtitle -->
+      
         <p class="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto px-4">
           Streamline your workflow and collaborate with your team efficiently.
         </p>
         
-        <!-- CTA Buttons -->
+        
         <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Link
             v-if="canRegister"

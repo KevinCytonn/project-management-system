@@ -7,7 +7,7 @@ const props = defineProps({
 });
 
 const viewFile = (fileId) => {
-    // Open file in new tab for viewing
+  
     window.open(route('deliverables.view', fileId), '_blank');
 };
 
@@ -20,13 +20,13 @@ const downloadFile = (fileId) => {
 <template>
     <AuthenticatedLayout>
         <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <!-- Header -->
+           
             <div class="mb-6">
                 <h1 class="text-2xl font-bold text-gray-900">All Uploaded Files</h1>
                 <p class="text-gray-600">View all deliverables across all projects</p>
             </div>
 
-            <!-- Files List -->
+          
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="p-6 border-b">
                     <h2 class="text-lg font-semibold text-gray-900">Project Deliverables</h2>
