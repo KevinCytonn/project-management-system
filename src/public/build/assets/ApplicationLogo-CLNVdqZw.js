@@ -1,1 +1,0 @@
-import{_ as s}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{g as c,o as t,b as e}from"./app-M6YtPai2.js";const r={},a={class:"flex items-center space-x-3"};function n(p,o){return t(),c("div",a,[...o[0]||(o[0]=[e("div",{class:"w-32"},[e("img",{src:"/images/logoapp.png",alt:"App Logo",class:"w-full object-cover"})],-1)])])}const m=s(r,[["render",n]]);export{m as A};
